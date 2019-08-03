@@ -1,0 +1,79 @@
+colors: http://colorizer.org/
+
+Make class burn
+    band color
+    tag color
+    group color
+    array flame
+    coordinate
+    radius
+    charge
+    colors object (key is color then object of burns keyed by x:y:z)
+    children object of key of 'x:y:z'
+
+        flame
+            min color and from SELF or GROUP
+            max color and from SELF or GROUP
+            operation
+            operation color
+            operation coordinate
+            operation radius
+
+
+
+
+
+ Burn always belongs to a group, it can react to/change data/colors inside a group and can store data
+ When a group is created, its represented by a burn object , which store all burn inside of it
+
+ the main challenge is how to store 3d geometry for where the children and colors are
+ usually, the colors or spaces are just applied immediately, but need to store for later,
+ so will just keep it and iterate to do hit test for bounding rectangle, can optimize later
+
+ Program
+
+ The goal of the program is to simulate edit and run burns. then there should be a single step
+ viewing a burn will first be 2d charts, and then 3d
+
+ flame color constants
+ GROUP = group color
+ ME    = current burn color
+ HUEPART = 25
+ COLPART = 20
+
+
+ coordinates start with (0,0,0) and are limited by 255 each direction
+
+ operations can set colors in either the group it belongs to, or inside itself
+
+ Syntax for operation
+ [optional unary OP] ARG1 (can be hardcoded or a color from self|group)
+ [optional unary OP] ARG2 (optional)(can be hardcoded or a color from self|group)
+ OP  (see list below)
+ RESULT (can go to self|group|nop)
+
+
+ Colors can be in different spaces, but only read colors that are in the same volume,
+  if more than one color then choose one randomly (and not first found in algorithm)
+
+ Conditions and loops depend on the colors being set for that operation to happen, these colors are min color and max color
+
+ Operations
+  SET
+  POP  (reads and removes color, if color has larger area all the color area is taken away)
+  READ (reads color)
+  Math ( arithmetic , trig, etc)
+  bitwise (and,or,xor,not)
+
+  Unary Operations
+    ++, --
+    LOCK  (make sure is only one using this for the duration of the operation), if fail will skip next two cycles
+    WAIT  (waits for the value to change from before)
+
+    when waiting or locking, the flame does not wait, will attempt another cycle
+
+
+
+
+
+
