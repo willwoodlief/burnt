@@ -1,0 +1,15 @@
+div.spacer {
+    width: 100%;
+    height: 2em;
+}
+
+table.flames, table.colors {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    border: 2px solid blue;
+}
+
+table.flames tbody tr td {
+    text-align: center;
+}

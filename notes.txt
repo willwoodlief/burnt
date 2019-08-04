@@ -1,13 +1,17 @@
 colors: http://colorizer.org/
 
+a burn does not have to have any of the following set
+
 Make class burn
-    band color
+    band color (hue divided into three)
     tag color
+    error tag color (reset after all flames in a round do not error out)
     group color
     array flame
     coordinate
     radius
     charge
+    default_color
     colors object (key is color then object of burns keyed by x:y:z)
     children object of key of 'x:y:z'
 
@@ -47,10 +51,11 @@ Make class burn
  operations can set colors in either the group it belongs to, or inside itself
 
  Syntax for operation
- [optional unary OP] ARG1 (can be hardcoded or a color from self|group)
- [optional unary OP] ARG2 (optional)(can be hardcoded or a color from self|group)
+ [optional unary OP] , [optional unary OP]  ARG1 (can be hardcoded or a color, or a tag part from self|group)
+
+ (optional arg )[optional unary OP],[optional unary OP] ARG2 (optional)(can be hardcoded or a color, or a tag part from self|group)
  OP  (see list below)
- RESULT (can go to self|group|nop)
+ (optional result target, default nop) [optional unary OP],[optional unary OP] RESULT COLOR (, or a tag part) (can go to self|group|nop)
 
 
  Colors can be in different spaces, but only read colors that are in the same volume,
@@ -64,13 +69,99 @@ Make class burn
   READ (reads color)
   Math ( arithmetic , trig, etc)
   bitwise (and,or,xor,not)
+  string (building and comparing)
+  regex
+  logic
+
+  * any operation which is a comparison will not fire off the result if false
+
+  GROUP
+            pop_group,  (detatches form group, puts itself into parent group, if burn was only thing in group then it disapears)
+            create_group  (creates new child group from parent) arg is group color
 
   Unary Operations
-    ++, --
+    ++, -- (inherent LOCK before doing it)
     LOCK  (make sure is only one using this for the duration of the operation), if fail will skip next two cycles
     WAIT  (waits for the value to change from before)
 
     when waiting or locking, the flame does not wait, will attempt another cycle
+
+    gets a property to read or write, based on where it is in the operations
+    tag,band,coord-z,coord-y,coord-x,radius,charge,group
+
+    COLOR parts
+      HUE,SAT,LUM,RED,BLUE,GREEN
+
+
+     * when writing the color of the group, will change the entire group color, will not move anything in or out of group
+
+
+     ----
+     operation modifier, when the tag is part of the operation (can be color part) will affect
+
+
+
+
+
+
+
+
+
+ ARG1 and ARG2 are always [color|number|string|boolean]
+    if COLOR , if no burn there (in the [groups|own] color band|area then is undef, else cast to a primative
+
+ -----------------------
+ casting a BURN
+   each burn has a default color to get a value from
+   numeric index or four letter field will be cast to a color
+ primatives are considered burns if referenced as such, but have no tag,coordinates,radius,charge, or default color  unless set, and band is same as parent
+
+
+COLORS in the flame
+
+COLOR is a string of a browser standard color name , or in #RGB hex format, or hsl format
+COLORREF =
+<target(self|group|parent group|sibling group)> (COLOR| <{unary op}TAG>)
+
+  cannot modify properties of other burns with same brand, can only modify the down brand
+   (IE) can only use tag on the down brand
+
+PRIMATIVE = boolean|number|string|date|regex
+
+SHORTCUT = ARG1|ARG2|RESULT
+
+ARG = [optional unary OP] , [optional unary OP] COLORREF|PRIMATIVE|SHORTCUT
+
+ Syntax for operation
+ <arg arg1>{<arg arg1>}{<arg result>}<OP>
+
+ GROUP LEVELS
+ MAX level is 255, min is 0
+
+
+ First level editor
+ A single burn, that only does primatives it its flame table, no groups  coordinates, band,tag ,error tag ,radius, charge
+ A table to edit the flames
+ and a table to show the current color values
+
+ simplified flame table
+ min color, max color, literal or color arg1, literal or color arg2, color result, operation
+
+ operations are add, subtract, SET, UNSET
+
+
+ view table simply has all the colors in order, in one column, and the values in the other column, unset will be marked by unset,
+ it will highlight any new changes from the last step, and also highlight from the second previous step
+
+ and a step button
+
+ https://gka.github.io/chroma.js/
+
+
+
+
+
+
 
 
 
