@@ -13,3 +13,10 @@ table.flames, table.colors {
 table.flames tbody tr td {
     text-align: center;
 }
+
+table.controls {
+    width: 50%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-top: 1em;
+}
